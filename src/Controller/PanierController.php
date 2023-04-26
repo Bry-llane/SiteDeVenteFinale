@@ -19,10 +19,7 @@ class PanierController extends AbstractController
     public function listAction(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        //$panier = $em->getRepository(Panier::class);
-        //$panierUsers = $panier->findOneBy(['utilisateur' => $user]);
         $args = array('panier' => $user->getPanier()->getValues());
-        //$args = array('panier' => $panierUsers,);
 
         return $this->render('Panier/list.html.twig', $args);
     }
@@ -34,17 +31,14 @@ class PanierController extends AbstractController
         $panierRepository = $em->getRepository(Panier::class);
         $panier = $panierRepository->findOneBy(['utilisateur' => $user, 'produit' => $id]);
 
-        //Quantity dans le panier
         $panierQuantite = $panier->getQuantitePanier();
-
-        // Quantity de base
         $produitQuantite = $id->getQuantite();
-
         $id->setQuantite($produitQuantite + $panierQuantite);
 
         $em->remove($panier);
         $em->persist($id);
         $em->flush();
+
         return $this->redirectToRoute('panier_list');
     }
 
@@ -80,6 +74,39 @@ class PanierController extends AbstractController
         $produitQuantite = $produit->getQuantite();
         $produit->setQuantite($produitQuantite - $quantite);
         $em->persist($produit);
+        $em->flush();
+        return $this->redirectToRoute('panier_list');
+    }
+
+    #[Route('/buy', name: '_buy')]
+    public function buyAction(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+
+        $panierRepository = $em->getRepository(Panier::class);
+        $paniers = $panierRepository->findBy(['utilisateur' => $user]);
+
+        foreach($paniers as $panier) {
+            $em->remove($panier);
+        }
+        $em->flush();
+        return $this->redirectToRoute('panier_list');
+    }
+
+    #[Route('/clear', name: '_clear')]
+    public function clearAction(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+
+        $panierRepository = $em->getRepository(Panier::class);
+        $paniers = $panierRepository->findBy(['utilisateur' => $user]);
+        foreach($paniers as $panier) {
+            $produit = $panier->getProduit();
+            $quantiteProduit = $produit->getQuantite();
+            $produit->setQuantite($quantiteProduit + $panier->getQuantitePanier());
+            $em->remove($panier);
+            $em->persist($produit);
+        }
         $em->flush();
         return $this->redirectToRoute('panier_list');
     }

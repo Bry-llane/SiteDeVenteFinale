@@ -2,14 +2,14 @@
 
 {% block body %}
     <h1>Liste des produits du magasin</h1>
-    <form method="post" action="{{ path("panier_add") }}">
-        <table>
+        <table border="1" align="center">
             <thead>
             <tr>
                 <th>Libellé</th>
                 <th>Prix</th>
                 <th>Quantité en stock</th>
                 <th>Commande</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -18,6 +18,7 @@
                     <td>{{ produit.libelle }}</td>
                     <td>{{ produit.prix }}</td>
                     <td>{{ produit.quantite }}</td>
+                    <form method="post" action="{{ path("panier_add") }}">
                     <td>
                         {% if produit.quantite > 0 %}
                             <select name="quantite">
@@ -25,15 +26,20 @@
                                     <option value="{{ i }}">{{ i }}</option>
                                 {% endfor %}
                             </select>
-                            <input type="hidden" name="produit_id" value="{{ produit.id }}">
                         {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('panier_add') }}">
+                            <input type="hidden" name="produit_id" value="{{ produit.id }}">
+                            {% if produit.quantite > 0 %}
+                                <button type="submit">Ajouter au panier</button>
+                            {% else %}
+                                <button type="button" disabled>Produit indisponible</button>
+                            {% endif %}
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
-        <button>Ajouter</button>
-    </form>
-
 {% endblock %}
