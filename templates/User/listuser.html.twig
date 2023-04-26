@@ -13,7 +13,9 @@
             </tr>
             </thead>
             <tbody>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             {% for user in users %}
+                {% if user.roles[0] == 'ROLE_ADMIN' %}
                 <tr>
                     <td>{{ user.nom }}</td>
                     <td>{{ user.prenom }}</td>
@@ -26,7 +28,27 @@
                         </form>
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                {% for user in users %}
+                    {% if user.roles[0] == 'ROLE_CLIENT' %}
+                        <tr>
+                            <td>{{ user.nom }}</td>
+                            <td>{{ user.prenom }}</td>
+                            <td>{{ user.birthday|date('d/m/Y') }}</td>
+                            <td>{{ user.roles[0] }}</td>
+                            <td>
+                                <form action="{{ path('user_deleteUser',{'id' : user.id}) }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
 
