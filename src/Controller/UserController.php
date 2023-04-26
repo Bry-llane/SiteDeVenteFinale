@@ -14,12 +14,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user', name: 'user')]
 class UserController extends AbstractController
 {
     #[Route('/createuser', name: '_createUser')]
-    public function newUser(EntityManagerInterface $em,Request $request):Response
+    public function newUser(EntityManagerInterface $em,Request $request,UserPasswordHasherInterface $passwordHasher):Response
     {
 
         $user = new User();
@@ -31,7 +32,11 @@ class UserController extends AbstractController
             $panier0 = new Panier();
             $em->persist($panier0);
 
-            $user->setPanier($panier0);
+            $user->addPanier($panier0);
+
+            //Hashage du mot de passe
+           $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
 
             $em->persist($user);
             $em->flush();
@@ -63,11 +68,9 @@ class UserController extends AbstractController
 
         $em->remove($user);
         $em->flush();
-        $this->addFlash('info','suppression utilisateur' . $id . 'réussie');
+        $this->addFlash('info','suppression utilisateur' .$id->getId(). 'réussie');
 
-        return $this->redirectToRoute('shop_list');
-
-
+        return $this->redirectToRoute('accueil',['id' => $id]);
     }
 
     #[Route('/listuser',name: '_listUser')]

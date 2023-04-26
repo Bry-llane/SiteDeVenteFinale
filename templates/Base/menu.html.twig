@@ -14,7 +14,7 @@
                     <li><a href="https://fr.wikipedia.org/wiki/The_Truman_Show"> The Truman Show </a></li>
                 {% endif %}
             {% elseif app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                <li><a href="{{ path("accueil") }}"> Gérer les administrateurs </a></li>
+                <li><a href="{{ path("user_listUser") }}"> Gérer les administrateurs </a></li>
             {% endif %}
         </ul>
     {% else %}

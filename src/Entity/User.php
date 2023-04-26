@@ -45,9 +45,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Panier::class)]
     private Collection $panier;
 
-    public function __construct()
+    public function __construct(string $roles = 'ROLE_CLIENT')
     {
         $this->panier = new ArrayCollection();
+        $this->roles = [$roles];
     }
 
     public function getId(): ?int
