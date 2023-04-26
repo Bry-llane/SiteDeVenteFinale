@@ -18,7 +18,15 @@ class PanierController extends AbstractController
     #[Route('/list', name: '_list')]
     public function listAction(EntityManagerInterface $em): Response
     {
-        return $this->render('Panier/list.html.twig');
+        $user = $this->getUser();
+        $panier = $em->getRepository(Panier::class);
+        $panierUsers = $panier->findOneBy(['utilisateur' => $user]);
+
+        $args = array(
+            'panier' => $panierUsers
+        );
+
+        return $this->render('Panier/list.html.twig', $args);
     }
 
     #[Route('/delete/{id}', name: '_delete')]
@@ -42,11 +50,39 @@ class PanierController extends AbstractController
         return $this->redirectToRoute('panier_list');
     }
 
-    #[Route('/add/{id}',name: '_add')]
-    public function addAction(Produit $id, EntityManagerInterface $em): Response
+
+    #[Route('/add',name: '_add')]
+    public function addAction(EntityManagerInterface $em, Request $request): Response
     {
+        $quantite = $request->request->get("quantite");
+        $produitId = $request->request->get("produit_id");
+        $user = $this->getUser();
 
+        $produitRepository = $em->getRepository(Produit::class);
+        $produit = $produitRepository->find($produitId);
 
+        $panier = new Panier();
+        $panier->setQuantitePanier(intval($quantite))
+            ->setUser($user)
+            ->setProduit($produit);
 
+        $userPaniers = $user->getPaniers()->getValues();
+        foreach($userPaniers as $userPanier) {
+            // Si l'utilisateur à déjà ce produit dans la table panier
+            // alors ajouter la nouvelle quantity à celle déjà présente dans la bdd
+            if($userPanier->getProduit() === $produit) {
+                $panier = $userPanier;
+                $panier->setQuantitePanier($panier->getQuantitePanier() + $quantite);
+            }
+        }
+
+        $em->persist($panier); // Pour le panier c'est bon
+
+        // Supprimer la quantité qui a été ajouté au panier à celle du produit
+        $produitQuantite = $produit->getQuantite();
+        $produit->setQuantite($produitQuantite - $quantite);
+        $em->persist($produit);
+        $em->flush();
+        return $this->redirectToRoute('panier_list');
     }
 }

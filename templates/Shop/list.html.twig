@@ -20,11 +20,12 @@
                     <td>{{ produit.quantite }}</td>
                     <td>
                         {% if produit.quantite > 0 %}
-                            <select name="quantite[{{ produit.id }}]">
+                            <select name="quantite">
                                 {% for i in 0..produit.quantite %}
                                     <option value="{{ i }}">{{ i }}</option>
                                 {% endfor %}
                             </select>
+                            <input type="hidden" name="produit_id" value="{{ produit.id }}">
                         {% endif %}
                     </td>
                 </tr>
