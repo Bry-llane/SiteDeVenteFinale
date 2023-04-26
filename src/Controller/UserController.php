@@ -6,6 +6,8 @@ use App\Entity\Panier;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use MongoDB\Driver\Manager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,6 +68,20 @@ class UserController extends AbstractController
         return $this->redirectToRoute('shop_list');
 
 
+    }
+
+    #[Route('/listuser',name: '_listUser')]
+    public function listUser(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $userRepository = $em->getRepository(User::class);
+        $users = $userRepository->findAll();
+
+        $args = array(
+            'users' => $users
+        );
+
+        return $this->render('User/listuser.html.twig',$args);
     }
 
 }
