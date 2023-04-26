@@ -19,12 +19,10 @@ class PanierController extends AbstractController
     public function listAction(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $panier = $em->getRepository(Panier::class);
-        $panierUsers = $panier->findOneBy(['utilisateur' => $user]);
-
-        $args = array(
-            'panier' => $panierUsers
-        );
+        //$panier = $em->getRepository(Panier::class);
+        //$panierUsers = $panier->findOneBy(['utilisateur' => $user]);
+        $args = array('panier' => $user->getPanier()->getValues());
+        //$args = array('panier' => $panierUsers,);
 
         return $this->render('Panier/list.html.twig', $args);
     }
@@ -34,7 +32,7 @@ class PanierController extends AbstractController
     {
         $user = $this->getUser();
         $panierRepository = $em->getRepository(Panier::class);
-        $panier = $panierRepository->findOneBy(['user' => $user, 'product' => $id]);
+        $panier = $panierRepository->findOneBy(['utilisateur' => $user, 'produit' => $id]);
 
         //Quantity dans le panier
         $panierQuantite = $panier->getQuantitePanier();
@@ -63,10 +61,10 @@ class PanierController extends AbstractController
 
         $panier = new Panier();
         $panier->setQuantitePanier(intval($quantite))
-            ->setUser($user)
+            ->setUtilisateur($user)
             ->setProduit($produit);
 
-        $userPaniers = $user->getPaniers()->getValues();
+        $userPaniers = $user->getPanier()->getValues();
         foreach($userPaniers as $userPanier) {
             // Si l'utilisateur à déjà ce produit dans la table panier
             // alors ajouter la nouvelle quantity à celle déjà présente dans la bdd

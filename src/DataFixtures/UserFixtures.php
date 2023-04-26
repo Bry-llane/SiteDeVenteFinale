@@ -35,6 +35,7 @@ class UserFixtures extends Fixture
         $em->persist($user1);
 
         $panier0 = new Panier();
+        $panier0->setQuantitePanier(2);
         $em->persist($panier0);
 
         $user2 = new User();
@@ -84,7 +85,7 @@ class UserFixtures extends Fixture
             ->setLibelle("orange")
             ->setQuantite(100)
             ->setPrix(55)
-            ->addPanier($panier1);
+            ->addPanier($panier0);
         $em->persist($produit);
 
         $em->flush();

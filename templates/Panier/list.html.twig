@@ -1,4 +1,4 @@
-{% extends '../Base/base.html.twig' %}
+{% extends '/Base/base.html.twig' %}
 
 {% block body %}
     <div>
@@ -13,10 +13,10 @@
                 </tr>
                 {% for produit in panier %}
                     <tr>
-                        <td>{{ produit.libelle }}</td>
-                        <td>{{ produit.prix }}</td>
-                        <td>{{ produit.quantite }}</td>
-                        <td><button><a href="{{ path("accueil") }}">Supprimer</a></button></td>
+                        <td>{{ produit.produit.libelle }}</td>
+                        <td>{{ produit.produit.prix }}</td>
+                        <td>{{ produit.quantitePanier }}</td>
+                        <td><button><a href="{{ path("panier_delete", {'id': produit.produit.id }) }}">Supprimer</a></button></td>
                     </tr>
                 {% endfor %}
             </table>
