@@ -1,0 +1,28 @@
+{% extends 'Base/base.html.twig' %}
+
+{% block body %}
+    <div>
+        <h1>Contenu de votre panier</h1>
+        <form>
+            <table border="1" align="center">
+                <tr>
+                    <th> Libelle </th>
+                    <th> Prix </th>
+                    <th> Quantité </th>
+                    <th> Action </th>
+                </tr>
+                {% for produit in app.user.panier.produit %}
+                    <tr>
+                        <td>{{ produit.libelle }}</td>
+                        <td>{{ produit.prix }}</td>
+                        <td>{{ produit.quantite }}</td>
+                        <td><button><a href="{{ path("accueil") }}">Supprimer</a></button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <td><button><a href="{{ path("accueil") }}">Commander</a></button></td>
+            <td><button><a href="{{ path("accueil") }}">Vider</a></button></td>
+        </form>
+    </div>
+{% endblock %}

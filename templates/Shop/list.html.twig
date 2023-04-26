@@ -1,0 +1,38 @@
+{% extends 'Base/base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des produits du magasin</h1>
+    <form method="post" action="{{ path("shop_add") }}">
+        <table>
+            <thead>
+            <tr>
+                <th>Libellé</th>
+                <th>Prix</th>
+                <th>Quantité en stock</th>
+                <th>Commande</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.libelle }}</td>
+                    <td>{{ produit.prix }}</td>
+                    <td>{{ produit.quantite }}</td>
+                    <td>
+                        {% if produit.quantite > 0 %}
+                            <select name="quantite[{{ produit.id }}]">
+                                {% for i in 0..produit.quantite %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <button>Ajouter</button>
+    </form>
+
+{% endblock %}

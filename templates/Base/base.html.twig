@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} PAGE D'ACCUEIL {% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {% endblock %}
+</head>
+<body>
+<h1>BIENVENUE SUR LE SITE DE VENTE</h1>
+<ol>
+
+</ol>
+{% block body %}{% endblock %}
+{% include 'Base/footer.html.twig' %}
+</body>
+</html>
