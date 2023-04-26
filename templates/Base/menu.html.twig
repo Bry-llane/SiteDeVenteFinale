@@ -6,7 +6,7 @@
             <li><a href="{{ path("security_logout") }}"> Se déconnecter </a></li>
             {% if (app.user.roles[0] == 'ROLE_CLIENT' or app.user.roles[0] == 'ROLE_ADMIN') %}
                 <li><a href="{{ path("accueil") }}"> Modifier mon profil </a></li>
-                <li><a href="{{ path("accueil") }}"> Produits du magasin </a></li>
+                <li><a href="{{ path("shop_list") }}"> Produits du magasin </a></li>
                 <li><a href="{{ path("panier_list") }}"> Mon panier </a></li>
                 {% if app.user.roles[0] == 'ROLE_ADMIN' %}
                     <li><a href="{{ path("accueil") }}"> Gérer les clients </a></li>
