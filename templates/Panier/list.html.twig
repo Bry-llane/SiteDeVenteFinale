@@ -9,7 +9,7 @@
                     <th> Libelle </th>
                     <th> Prix </th>
                     <th> Quantité </th>
-
+                    <th> Prix Totale </th>
                     <th> Action </th>
                 </tr>
                 {% for produit in panier %}
@@ -17,6 +17,7 @@
                         <td>{{ produit.produit.libelle }}</td>
                         <td>{{ produit.produit.prix }}</td>
                         <td>{{ produit.quantitePanier }}</td>
+                        <td>{{ produit.quantitePanier * produit.produit.prix }}</td>
                         <td><button><a href="{{ path("panier_delete", {'id': produit.produit.id }) }}">Supprimer</a></button></td>
                     </tr>
                 {% endfor %}

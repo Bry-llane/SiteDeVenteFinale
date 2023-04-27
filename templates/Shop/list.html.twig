@@ -19,25 +19,24 @@
                     <td>{{ produit.prix }}</td>
                     <td>{{ produit.quantite }}</td>
                     <form method="post" action="{{ path("panier_add") }}">
-                    <td>
-                        {% if produit.quantite > 0 %}
-                            <select name="quantite">
-                                {% for i in 0..produit.quantite %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <form method="post" action="{{ path('panier_add') }}">
+                        <td>
+                            {% if produit.quantite > 0 %}
+                                <select name="quantite">
+                                    {% for i in 0..produit.quantite %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </td>
+                        <td>
                             <input type="hidden" name="produit_id" value="{{ produit.id }}">
                             {% if produit.quantite > 0 %}
                                 <button type="submit">Ajouter au panier</button>
                             {% else %}
                                 <button type="button" disabled>Produit indisponible</button>
                             {% endif %}
-                        </form>
-                    </td>
+                        </td>
+                    </form>
                 </tr>
             {% endfor %}
             </tbody>
