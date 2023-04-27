@@ -5,7 +5,7 @@
         <ul>
             <li><a href="{{ path("security_logout") }}"> Se déconnecter </a></li>
             {% if (app.user.roles[0] == 'ROLE_CLIENT' or app.user.roles[0] == 'ROLE_ADMIN') %}
-                <li><a href="{{ path("accueil") }}"> Modifier mon profil </a></li>
+                <li><a href="{{ path("user_edituser", {'id': app.user.id}) }}">Modifier mon profil</a></li>
                 <li><a href="{{ path("shop_list") }}"> Produits du magasin </a></li>
                 <li><a href="{{ path("panier_list") }}"> Mon panier </a></li>
                 {% if app.user.roles[0] == 'ROLE_ADMIN' %}
@@ -15,6 +15,7 @@
                 {% endif %}
             {% elseif app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
                 <li><a href="{{ path("user_listUser") }}"> Gérer les administrateurs </a></li>
+                <li><a href="{{ path("user_editusersuperadmin", {'id': app.user.id}) }}">Modifier mon profil</a></li>
             {% endif %}
         </ul>
     {% else %}

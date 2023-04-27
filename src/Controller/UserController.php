@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\User;
+use App\Form\ProduitType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -70,7 +71,7 @@ class UserController extends AbstractController
         $em->flush();
         $this->addFlash('info','suppression utilisateur' .$id->getId(). 'réussie');
 
-        return $this->redirectToRoute('accueil',['id' => $id]);
+        return $this->redirectToRoute('user_listUser',['id' => $id]);
     }
 
     #[Route('/listuser',name: '_listUser')]
@@ -87,6 +88,71 @@ class UserController extends AbstractController
         return $this->render('User/listuser.html.twig',$args);
     }
 
+    #[Route('/edituser/{id}',name: '_edituser')]
+    public function editUser(Request $request,User $user,EntityManagerInterface $em,UserPasswordHasherInterface $passwordHasher){
+
+        $UserRepository = $em->getRepository(User::class);
+        $user = $UserRepository->find($user->getId());
+
+        $form = $this->createForm(UserType::class,$user);
+        $form->add('Envoyer',SubmitType::class,['label' => 'editer compte']);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            //Hashage du mot de passe
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
+
+            $em->flush();
+
+            $this->addFlash('info','creation reussi');
+            return $this->redirectToRoute('shop_list');
+
+        }
+        if($form->isSubmitted()) {
+            $this->addFlash('info', 'edition du formulaire incorect');
+        }
+        $args = array(
+            'myform' => $form->createView(),
+        );
+
+        return $this->render('User/edituser.html.twig',$args);
+    }
+
+
+    #[Route('/editusersuperadmin/{id}',name: '_editusersuperadmin')]
+    public function editUsersuper(Request $request,User $user,EntityManagerInterface $em,UserPasswordHasherInterface $passwordHasher){
+
+        $UserRepository = $em->getRepository(User::class);
+        $user = $UserRepository->find($user->getId());
+
+        $form = $this->createForm(UserType::class,$user);
+        $form->add('Envoyer',SubmitType::class,['label' => 'editer compte']);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            //Hashage du mot de passe
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
+
+            $em->flush();
+
+            $this->addFlash('info','creation reussi');
+            return $this->redirectToRoute('accueil');
+
+        }
+        if($form->isSubmitted()) {
+            $this->addFlash('info', 'edition du formulaire incorect');
+        }
+        $args = array(
+            'myform' => $form->createView(),
+        );
+
+        return $this->render('User/edituser.html.twig',$args);
+    }
+        
 
 
 }
