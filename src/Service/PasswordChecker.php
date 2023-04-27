@@ -8,11 +8,6 @@ class PasswordChecker
 {
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->passwordHasher = $passwordHasher;
-    }
-
     public function isStrongPassword(string $password): bool
     {
         // Vérifie que le mot de passe a une longueur d'au moins 6 caractères
@@ -27,7 +22,6 @@ class PasswordChecker
                 return false;
             }
         }
-
         return true;
     }
 }
