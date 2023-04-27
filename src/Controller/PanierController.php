@@ -50,6 +50,10 @@ class PanierController extends AbstractController
         $produitId = $request->request->get("produit_id");
         $user = $this->getUser();
 
+        if ($quantite == 0){
+            return $this->redirectToRoute('shop_list');
+        }
+
         $produitRepository = $em->getRepository(Produit::class);
         $produit = $produitRepository->find($produitId);
 
@@ -64,6 +68,9 @@ class PanierController extends AbstractController
             // alors ajouter la nouvelle quantity à celle déjà présente dans la bdd
             if($userPanier->getProduit() === $produit) {
                 $panier = $userPanier;
+                if($panier->getQuantitePanier() + $quantite < 0){
+                    return $this->redirectToRoute('panier_delete', ['id' => $produitId]);
+                }
                 $panier->setQuantitePanier($panier->getQuantitePanier() + $quantite);
             }
         }
