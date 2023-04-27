@@ -2,8 +2,14 @@
 
 {% block title %} SITE DE VENTE {% endblock %}
 {% block body %}
-    <h1>Bienvenue sur notre site web!</h1>
-
+    <h1>Bienvenue sur notre site web!
+        {% if (role[0] == 'ROLE_CLIENT') %} Client
+        {% elseif (role[0] == 'ROLE_ADMIN') %} Admin
+        {% elseif (role[0] == 'ROLE_SUPER_ADMIN') %} Super Admin
+        {% else %} Anonyme
+        {% endif %}
+    </h1>
+    <p> {{ password }}</p>
 
     {% include 'Base/menu.html.twig' %}
 {% endblock %}

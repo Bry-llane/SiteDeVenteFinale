@@ -22,7 +22,7 @@
                         <td>
                             {% if produit.quantite > 0 %}
                                 <select name="quantite">
-                                    {% for i in 0..produit.quantite %}
+                                    {% for i in -produit.quantite..produit.quantite %}
                                         <option value="{{ i }}">{{ i }}</option>
                                     {% endfor %}
                                 </select>

@@ -35,7 +35,7 @@ class UserController extends AbstractController
             $user->addPanier($panier0);
 
             //Hashage du mot de passe
-           $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
             $user->setPassword($hashedPassword);
 
             $em->persist($user);
