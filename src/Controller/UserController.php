@@ -30,10 +30,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $panier0 = new Panier();
-            $em->persist($panier0);
-
-            $user->addPanier($panier0);
 
             //Hashage du mot de passe
             $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
