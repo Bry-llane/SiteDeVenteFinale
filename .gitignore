@@ -13,4 +13,4 @@
 .idea
 
 # exclusion du répertoire des bases de données SQLite
-/database
+/dbvente
