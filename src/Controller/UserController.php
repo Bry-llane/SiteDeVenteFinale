@@ -88,7 +88,8 @@ class UserController extends AbstractController
         return $this->render('User/listuser.html.twig',$args);
     }
 
-    #[Route('/edituser/{id}',name: '_edituser')]
+    #[Route('/edituser/{id}',name: '_edituser'),
+        IsGranted('ROLE_ClIENT')]
     public function editUser(Request $request,User $user,EntityManagerInterface $em,UserPasswordHasherInterface $passwordHasher){
 
         $UserRepository = $em->getRepository(User::class);
@@ -121,7 +122,8 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/editusersuperadmin/{id}',name: '_editusersuperadmin')]
+    #[Route('/editusersuperadmin/{id}',name: '_editusersuperadmin'),
+        IsGranted('ROLE_SUPER_ADMIN')]
     public function editUsersuper(Request $request,User $user,EntityManagerInterface $em,UserPasswordHasherInterface $passwordHasher){
 
         $UserRepository = $em->getRepository(User::class);

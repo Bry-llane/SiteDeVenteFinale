@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/panier', name: 'panier')]
+#[Route('/panier', name: 'panier'),
+    IsGranted('ROLE_CLIENT')]
 class PanierController extends AbstractController
 {
     #[Route('/list', name: '_list')]

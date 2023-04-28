@@ -1,0 +1,11 @@
+<header style="height: 100px; width: 600%; overflow: hidden; object-fit: cover">
+    {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles %}
+        <img src="{{ asset('images/admin.jpg') }}" alt="Admin">
+    {% elseif app.user is not null and 'ROLE_CLIENT' in app.user.roles %}
+        <img src="{{ asset('images/shopping.jpg') }}" alt="Connected">
+    {% elseif app.user is not null and 'ROLE_SUPER_ADMIN' in app.user.roles %}
+            <img src="{{ asset('images/superadmin.jpg') }}" alt="Connected">
+    {% else %}
+        <img src="{{ asset('images/norole.jpg') }}" alt="Visiteur">
+    {% endif %}
+</header>
