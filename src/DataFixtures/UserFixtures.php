@@ -50,31 +50,23 @@ class UserFixtures extends Fixture
 
         $em->persist($user2);
 
-        $panier1 = new Panier();
-        $em->persist($panier1);
-
         $user3 = new User();
         $user3 ->setLogin("rita")
             ->setNom("Zrour")
             ->setBirthday(new \DateTimeImmutable("07-11-1962"))
             ->setRoles(["ROLE_CLIENT"])
-            ->setPrenom("Rita")
-            ->addPanier($panier1);
+            ->setPrenom("Rita");
         $hashedPassword3 = $this->passwordEncoder->hashPassword($user3,'atir');
         $user3->setPassword($hashedPassword3);
 
         $em->persist($user3);
-
-        $panier2 = new Panier();
-        $em->persist($panier2);
 
         $user4 = new User();
         $user4 ->setLogin("simon")
             ->setNom("Rame")
             ->setBirthday(new \DateTimeImmutable("23-12-1982"))
             ->setRoles(["ROLE_CLIENT"])
-            ->setPrenom("Simon")
-            ->addPanier($panier2);
+            ->setPrenom("Simon");
         $hashedPassword4 = $this->passwordEncoder->hashPassword($user4,'nomis');
         $user4->setPassword($hashedPassword4);
 
