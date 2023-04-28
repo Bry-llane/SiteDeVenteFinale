@@ -6,8 +6,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordChecker
 {
-    private UserPasswordHasherInterface $passwordHasher;
-
     public function isStrongPassword(string $password): bool
     {
         // Vérifie que le mot de passe a une longueur d'au moins 6 caractères
